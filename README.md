@@ -6,3 +6,8 @@ The script requires two inputs. A png file larger than 300x300 pixels and a gcod
 
 **Example usage:**
 python includeThumbnail.py picture.png your.gcode
+
+
+
+
+**Use at your own risk**
