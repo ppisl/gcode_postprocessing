@@ -11,7 +11,8 @@ def createStringThumbnail(image, width, height):
   imageData = io.BytesIO()
   imageNew.save(imageData, format='PNG')
   stringData = base64.b64encode(imageData.getvalue())
-  result = f"; thumbnail begin {width} {height} {len(stringData)}\n; "
+  result = ";\n;Generated with Cura_SteamEngine\n"
+  result += f"; thumbnail begin {width} {height} {len(stringData)}\n; "
   modulo = 77
   firstLine = True
   for index in range(len(stringData)):
@@ -47,12 +48,13 @@ def createThumbnail(gcodeFile, image):
   else:
     # find first non comment line
     index = 0
-    while gcode[index] == ";":
-      index = gcode.find("\n")
+    while gcode[index] == ";" or gcode[index] == '\n':
+      index = gcode.find("\n", index)
       if index == -1:
         break;
       else:
-        index +=1
+        index = index + 1
+      
     if index == -1:
       orignalStart = 0
     else: 
@@ -89,7 +91,7 @@ if __name__ == "__main__":
     file2 = sys.argv[2]
     problem = False
     if not os.path.isfile(file1):
-      print(f"{file1} in not a file.")
+      print(f"{file1} is not a file.")
       problem = True
     if not os.path.isfile(file2):
       print(f"{file2} is not a file.")
@@ -114,12 +116,15 @@ if __name__ == "__main__":
     if not imageF:
       print("You have to specified a .png file.")
       problem = True
-      
+  
     image = Image.open(imageF, mode='r')
+
     if image.height < 300 or image.width < 300 :
       print(f"Resolution of the input image has to be bigger then 300x300 pixels. The provided image has resolution {image.width}x{image.height}")
       problem = True
-    
+
+    print(f"{imageF} has resolution {image.width}x{image.height}.")    
+        
     if not problem:
       createThumbnail(gcodeF, image)
     

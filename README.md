@@ -10,4 +10,4 @@ python includeThumbnail.py picture.png your.gcode
 
 
 
-**Use at your own risk**
+**Use at Your Own Risk**
